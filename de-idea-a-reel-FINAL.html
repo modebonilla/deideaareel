@@ -147,6 +147,11 @@
 </style>
 </head>
 <body>
+<script>
+  // Asegurar que la página inicia arriba
+  if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
+  window.scrollTo(0, 0);
+</script>
 
 <nav class="nav">
   <div class="nav-logo">BRAVO<span>.</span></div>
@@ -417,10 +422,12 @@ function agregarTema() {
   container.appendChild(card);
   actualizarContador();
 
-  // Scroll al nuevo tema
-  setTimeout(() => {
-    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  // Scroll al nuevo tema solo si no es el primero
+  if (id > 1) {
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
 }
 
 function eliminarTema(id) {
