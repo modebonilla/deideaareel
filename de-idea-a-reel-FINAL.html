@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De Idea a Reel — Bravo Agencia</title>
+<style>
+  :root {
+    --red: #E50914;
+    --red-dark: #B8070F;
+    --black: #0A0A0A;
+    --white: #FFFFFF;
+    --gray-100: #F5F5F5;
+    --gray-200: #E8E8E8;
+    --gray-400: #999999;
+    --gray-600: #555555;
+    --gray-800: #222222;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--white); color: var(--black); line-height: 1.6; font-size: 16px; }
+
+  .nav { background: var(--black); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-size: 18px; font-weight: 900; letter-spacing: 0.08em; color: var(--white); text-transform: uppercase; }
+  .nav-logo span { color: var(--red); }
+  .nav-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-400); }
+
+  .hero { background: var(--black); padding: 64px 24px 56px; text-align: center; border-bottom: 3px solid var(--red); }
+  .hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--red); margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(36px, 7vw, 64px); font-weight: 900; letter-spacing: -0.03em; color: var(--white); line-height: 1.0; margin-bottom: 24px; }
+  .hero h1 em { font-style: normal; color: var(--red); }
+  .hero-intro { max-width: 520px; margin: 0 auto; font-size: 15px; color: #AAAAAA; line-height: 1.8; }
+
+  .form-wrap { max-width: 680px; margin: 0 auto; padding: 48px 24px 0; }
+
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--red); margin-bottom: 32px; display: flex; align-items: center; gap: 14px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+
+  .client-block { background: var(--gray-100); border-radius: 6px; padding: 28px; margin-bottom: 40px; border: 1.5px solid var(--gray-200); }
+  .client-block-title { font-size: 12px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--black); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .client-block-title::before { content: ''; width: 4px; height: 16px; background: var(--red); border-radius: 2px; }
+
+  .field-block { margin-bottom: 36px; }
+  .field-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .field-num { font-size: 11px; font-weight: 800; color: var(--red); letter-spacing: 0.1em; }
+  .badge { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; }
+  .badge-short { background: #EEF4FF; color: #2255BB; }
+  .badge-long { background: #FFF0EE; color: #CC2200; }
+  .badge-req { background: var(--red); color: white; margin-left: auto; }
+  .badge-opt { background: var(--gray-200); color: var(--gray-600); margin-left: auto; }
+  .field-label { font-size: 16px; font-weight: 700; color: var(--black); margin-bottom: 6px; line-height: 1.35; }
+  .field-micro { font-size: 13px; color: var(--gray-600); margin-bottom: 14px; line-height: 1.7; }
+
+  .examples { background: var(--white); border-left: 3px solid var(--gray-200); padding: 12px 14px; border-radius: 0 4px 4px 0; margin-bottom: 14px; }
+  .examples-title { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 8px; }
+  .examples ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .examples ul li { font-size: 12px; color: var(--gray-600); padding-left: 14px; position: relative; line-height: 1.5; }
+  .examples ul li::before { content: '→'; position: absolute; left: 0; color: var(--red); font-size: 10px; top: 2px; }
+
+  input[type="text"], textarea {
+    width: 100%; border: 1.5px solid var(--gray-200); border-radius: 4px; padding: 13px 16px;
+    font-size: 15px; font-family: inherit; color: var(--black); background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s; outline: none; resize: vertical;
+  }
+  input[type="text"]:focus, textarea:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(229,9,20,0.08); }
+  input[type="text"].error, textarea.error { border-color: var(--red); background: #FFF8F8; }
+  input[type="text"]::placeholder, textarea::placeholder { color: var(--gray-400); font-size: 14px; }
+  textarea { min-height: 120px; }
+
+  .tipo-switch-wrap { margin-bottom: 28px; }
+  .tipo-switch-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray-600); margin-bottom: 12px; }
+  .tipo-switch { display: flex; border-radius: 6px; overflow: hidden; border: 1.5px solid var(--gray-200); }
+  .tipo-btn {
+    flex: 1; padding: 14px 16px; background: var(--white); border: none; cursor: pointer;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: var(--gray-600);
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .tipo-btn svg { width: 16px; height: 16px; }
+  .tipo-btn.valor.active { background: var(--black); color: var(--white); }
+  .tipo-btn.venta.active { background: var(--red); color: var(--white); }
+  .tipo-btn:not(.active):hover { background: var(--gray-100); }
+
+  .yn-row { display: flex; gap: 12px; margin-bottom: 14px; }
+  .yn-btn {
+    flex: 1; padding: 12px; border: 1.5px solid var(--gray-200); border-radius: 4px; background: var(--white);
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; color: var(--gray-600);
+  }
+  .yn-btn.active { background: var(--red); border-color: var(--red); color: white; }
+  .yn-detail { display: none; }
+  .yn-detail.show { display: block; margin-top: 12px; }
+
+  .tema-card { border: 1.5px solid var(--gray-200); border-radius: 8px; margin-bottom: 24px; overflow: hidden; transition: box-shadow 0.2s; }
+  .tema-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .tema-card-head { background: var(--black); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .tema-card-head-left { display: flex; align-items: center; gap: 12px; }
+  .tema-num { background: var(--red); color: white; font-size: 11px; font-weight: 800; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .tema-title-display { font-size: 14px; font-weight: 700; color: var(--white); }
+  .tema-title-display.placeholder { color: var(--gray-400); font-weight: 400; }
+  .tema-type-tag { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; background: #333; color: #ccc; }
+  .tema-type-tag.venta { background: var(--red); color: white; }
+  .tema-actions { display: flex; align-items: center; gap: 8px; }
+  .btn-remove { background: none; border: 1px solid #333; color: var(--gray-400); padding: 5px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.08em; }
+  .btn-remove:hover { border-color: var(--red); color: var(--red); }
+  .btn-toggle { background: none; border: none; color: var(--gray-400); cursor: pointer; font-size: 18px; padding: 4px; transition: transform 0.2s; }
+  .btn-toggle.collapsed { transform: rotate(-90deg); }
+
+  .tema-card-body { padding: 28px; background: var(--white); }
+  .tema-card-body.hidden { display: none; }
+
+  .btn-add-tema {
+    width: 100%; padding: 18px; border: 2px dashed var(--gray-200); border-radius: 6px;
+    background: none; color: var(--gray-600); font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;
+    margin-bottom: 48px; letter-spacing: 0.05em;
+  }
+  .btn-add-tema:hover { border-color: var(--red); color: var(--red); background: #FFF8F8; }
+  .btn-add-tema svg { width: 18px; height: 18px; }
+
+  .temas-counter { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .counter-badge { background: var(--red); color: white; font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px; }
+  .counter-label { font-size: 13px; color: var(--gray-600); }
+
+  .submit-zone { background: var(--black); padding: 48px 24px; text-align: center; margin-top: 0; }
+  .submit-closing { max-width: 480px; margin: 0 auto 32px; font-size: 15px; color: #AAAAAA; line-height: 1.75; }
+  .btn-submit { background: var(--red); color: var(--white); border: none; padding: 18px 44px; font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: background 0.2s, transform 0.1s; display: inline-flex; align-items: center; gap: 12px; }
+  .btn-submit:hover { background: var(--red-dark); }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .error-msg { display: none; background: #FFF0F0; border: 1px solid #FFCCCC; border-radius: 4px; padding: 14px 18px; margin-bottom: 24px; font-size: 13px; color: #CC0000; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .error-msg.show { display: block; }
+
+  .success-state { display: none; background: var(--black); padding: 80px 24px; text-align: center; }
+  .success-state.show { display: block; }
+  .success-icon { width: 72px; height: 72px; background: var(--red); border-radius: 50%; margin: 0 auto 28px; display: flex; align-items: center; justify-content: center; }
+  .success-icon svg { width: 36px; height: 36px; color: white; }
+  .success-title { font-size: 28px; font-weight: 900; color: var(--white); margin-bottom: 16px; letter-spacing: -0.02em; }
+  .success-msg { font-size: 15px; color: #AAAAAA; max-width: 420px; margin: 0 auto 36px; line-height: 1.75; }
+  .btn-pdf { background: var(--white); color: var(--black); border: none; padding: 18px 44px; font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 12px; }
+  .btn-pdf:hover { background: var(--gray-100); }
+  .btn-pdf svg { width: 18px; height: 18px; }
+  .pdf-note { margin-top: 14px; font-size: 12px; color: #555; letter-spacing: 0.05em; }
+
+  footer { background: var(--black); padding: 28px 24px; text-align: center; font-size: 12px; color: var(--gray-400); letter-spacing: 0.08em; border-top: 1px solid #1a1a1a; }
+  footer span { color: var(--red); }
+
+  @media(max-width: 480px) {
+    .hero { padding: 48px 20px 40px; }
+    .form-wrap { padding: 36px 20px 0; }
+    .tema-card-body { padding: 20px; }
+    .client-block { padding: 20px; }
+    .tipo-btn { font-size: 11px; padding: 12px 8px; }
+  }
+</style>
+</head>
+<body>
+<script>
+  if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
+  window.scrollTo(0, 0);
+</script>
+
+<nav class="nav">
+  <div class="nav-logo">BRAVO<span>.</span></div>
+  <div class="nav-tag">Brief de Contenido</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Bravo Agencia · Producción de Reels</div>
+  <h1>De idea<br>a <em>reel</em></h1>
+  <p class="hero-intro">
+    Este formulario nos ayudará a convertir tus ideas y temas en reels claros, estratégicos y fáciles de entender.<br><br>
+    Puedes agregar todos los temas que quieras, ya sean de contenido de valor o de venta. Al finalizar, envíanos todo de una vez y descarga tu PDF.
+  </p>
+</div>
+
+<div id="form-container">
+<form id="bravo-form" action="https://formspree.io/f/maqzayrj" method="POST">
+  <input type="hidden" name="_subject" value="Nuevo brief — De idea a reel · Bravo Agencia">
+
+  <div class="form-wrap">
+
+    <div class="section-label">Datos del cliente</div>
+    <div class="client-block">
+      <div class="client-block-title">Información general</div>
+      <div class="field-block">
+        <div class="field-meta">
+          <span class="field-num">—</span>
+          <span class="badge badge-short">Respuesta corta</span>
+          <span class="badge badge-req">Obligatorio</span>
+        </div>
+        <div class="field-label">Nombre de la empresa o marca</div>
+        <div class="field-micro">Escribe el nombre de tu empresa, marca personal, consultorio, clínica o proyecto.</div>
+        <input type="text" name="empresa" id="empresa" placeholder="Ej: Clínica Mantilla" required>
+      </div>
+      <div class="field-block" style="margin-bottom:0;">
+        <div class="field-meta">
+          <span class="field-num">—</span>
+          <span class="badge badge-short">Respuesta corta</span>
+          <span class="badge badge-req">Obligatorio</span>
+        </div>
+        <div class="field-label">Nombre de la persona que envía</div>
+        <div class="field-micro">Escribe tu nombre para saber quién nos está enviando estas ideas.</div>
+        <input type="text" name="nombre" id="nombre" placeholder="Ej: Dr. Alfredo Maraver" required>
+      </div>
+    </div>
+
+    <div class="section-label">Temas para reels</div>
+    <div class="temas-counter">
+      <span class="counter-badge" id="counter">1</span>
+      <span class="counter-label" id="counter-label">tema agregado</span>
+    </div>
+
+    <div id="temas-container"></div>
+
+    <button type="button" class="btn-add-tema" onclick="agregarTema()">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+      </svg>
+      Agregar otro tema
+    </button>
+
+  </div>
+
+  <div class="submit-zone">
+    <p class="submit-closing">
+      Gracias por compartir tus ideas. Con esta información podremos convertir tu conocimiento en reels claros, estratégicos y fáciles de entender para tu audiencia.
+    </p>
+    <div class="error-msg" id="error-msg">Por favor completa todos los campos obligatorios antes de enviar.</div>
+    <button type="submit" class="btn-submit" id="btn-submit">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      Finalizar y enviar todo
+    </button>
+  </div>
+
+</form>
+
+<div class="success-state" id="success-state">
+  <div class="success-icon">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+    </svg>
+  </div>
+  <div class="success-title">¡Briefs recibidos!</div>
+  <p class="success-msg">Gracias por compartir tus ideas. Ya los tenemos y comenzaremos a trabajar en tus guiones.</p>
+  <button class="btn-pdf" onclick="descargarPDF()">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/>
+    </svg>
+    Descargar todos mis briefs en PDF
+  </button>
+  <p class="pdf-note">Un solo PDF con todos tus temas organizados por sección</p>
+</div>
+
+</div>
+
+<footer>&copy; 2025 <span>Bravo Agencia</span> · Sistema de Producción de Contenido</footer>
+
+<script>
+let temaCount = 0;
+let savedData = {};
+
+function camposValor(id) {
+  return `
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">03</span>
+        <span class="badge badge-short">Respuesta corta</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Cuál es el tema principal del reel?</div>
+      <div class="field-micro">Escribe el tema central. No tiene que estar redactado bonito, solo necesitamos saber de qué trata.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>¿Por qué las várices no son solo un problema estético?</li>
+          <li>Errores al elegir protector solar</li>
+          <li>Por qué tus redes no están generando ventas</li>
+        </ul>
+      </div>
+      <input type="text" name="tema_${id}" id="tema-input-${id}" placeholder="Ej: Errores al elegir protector solar" oninput="actualizarTituloTema(${id})" required>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">04</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">Explícanos este tema como si se lo estuvieras explicando a tu cliente ideal</div>
+      <div class="field-micro">Explícalo con tus palabras. No importa si está desordenado o muy largo.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>"Muchos negocios creen que publicar todos los días es suficiente, pero si no tienen estrategia, generan likes sin generar ventas…"</li>
+          <li>"Este tema es importante porque muchas personas creen que las várices solo se ven mal, pero pueden ser señal de un problema circulatorio…"</li>
+        </ul>
+      </div>
+      <textarea name="explicacion_${id}" placeholder="Escribe aquí la explicación con tus propias palabras…" required></textarea>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">05</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Cuál es la idea más importante que la gente debe entender?</div>
+      <div class="field-micro">Si la persona solo recordara una cosa del reel, ¿qué debería ser?</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Que las várices no siempre son solo un tema estético.</li>
+          <li>Que publicar bonito no significa tener una estrategia de ventas.</li>
+          <li>Que el problema puede empeorar si se deja pasar demasiado tiempo.</li>
+        </ul>
+      </div>
+      <textarea name="idea_${id}" placeholder="La idea más importante es que…" required></textarea>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">06</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Qué error, mito o creencia equivocada tiene la gente sobre este tema?</div>
+      <div class="field-micro">Escribe qué suele pensar mal la gente o qué error cometen.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Creen que las várices solo afectan la apariencia.</li>
+          <li>Creen que hacer más publicaciones significa vender más.</li>
+          <li>Creen que si no duele, no es grave.</li>
+        </ul>
+      </div>
+      <textarea name="mito_${id}" placeholder="El error más común que cometen es…" required></textarea>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">07</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Qué dolor, problema o preocupación tiene la persona antes de interesarse en este tema?</div>
+      <div class="field-micro">Describe qué está viviendo o qué quiere resolver antes de buscar esta solución.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Tiene miedo de operarse.</li>
+          <li>No sabe por qué no vende en redes sociales.</li>
+          <li>Siente que está gastando dinero sin ver resultados.</li>
+        </ul>
+      </div>
+      <textarea name="dolor_${id}" placeholder="Antes de buscar esta solución, la persona está viviendo…" required></textarea>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">08</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Qué solución, beneficio, aprendizaje o resultado quieres comunicar?</div>
+      <div class="field-micro">Explica qué puede lograr, resolver o mejorar la persona.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Que existe una alternativa menos invasiva.</li>
+          <li>Que puede dejar de improvisar y tener una estrategia.</li>
+          <li>Que puede resolver el problema desde la causa y no solo desde el síntoma.</li>
+        </ul>
+      </div>
+      <textarea name="solucion_${id}" placeholder="Lo que queremos que la persona entienda es que puede…" required></textarea>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">09</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-opt">Opcional</span>
+      </div>
+      <div class="field-label">¿Hay algo que sí o sí quieres que se mencione?</div>
+      <div class="field-micro">Cualquier dato, advertencia o detalle que debemos tomar en cuenta obligatoriamente.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Sí o sí mencionar que requiere valoración previa.</li>
+          <li>Aclarar que no se trata solo de estética.</li>
+        </ul>
+      </div>
+      <textarea name="si_mencionar_${id}" placeholder="Es obligatorio mencionar que…"></textarea>
+    </div>
+
+    <div class="field-block" style="margin-bottom:0;">
+      <div class="field-meta">
+        <span class="field-num">10</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-opt">Opcional</span>
+      </div>
+      <div class="field-label">¿Hay algo que NO debemos decir o cuidar?</div>
+      <div class="field-micro">Para cuidar temas médicos, legales, financieros o cualquier información delicada.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>No prometer resultados garantizados.</li>
+          <li>No generar miedo excesivo.</li>
+        </ul>
+      </div>
+      <textarea name="no_mencionar_${id}" placeholder="Hay que evitar o cuidar que…"></textarea>
+    </div>
+  `;
+}
+
+function camposVenta(id) {
+  return `
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">03</span>
+        <span class="badge badge-short">Respuesta corta</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Qué producto o servicio quieres promocionar?</div>
+      <div class="field-micro">Escribe el nombre del producto o servicio que quieres vender en este reel.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Limpieza facial profunda</li>
+          <li>Paquete de impermeabilización de techos</li>
+          <li>Consulta de valoración de várices</li>
+        </ul>
+      </div>
+      <input type="text" name="producto_${id}" id="tema-input-${id}" placeholder="Ej: Limpieza facial profunda" oninput="actualizarTituloTema(${id})" required>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">04</span>
+        <span class="badge badge-short">Sí / No</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Tiene descuento, oferta o promoción?</div>
+      <div class="field-micro">Si tiene alguna promoción especial, dinos cuál.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>20% de descuento solo esta semana</li>
+          <li>2x1 en la primera consulta</li>
+          <li>Envío gratis en compras mayores a $800</li>
+        </ul>
+      </div>
+      <div class="yn-row">
+        <button type="button" class="yn-btn" onclick="toggleYN(this, ${id})">Sí</button>
+        <button type="button" class="yn-btn" onclick="toggleYN(this, ${id})">No</button>
+      </div>
+      <input type="hidden" name="tiene_promo_${id}" id="tiene_promo_${id}" required>
+      <div class="yn-detail" id="promo-detail-${id}">
+        <input type="text" name="detalle_promo_${id}" placeholder="Ej: 20% de descuento esta semana">
+      </div>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">05</span>
+        <span class="badge badge-short">Respuesta corta</span>
+        <span class="badge badge-opt">Opcional</span>
+      </div>
+      <div class="field-label">¿Desde cuánto va el precio de este producto o servicio?</div>
+      <div class="field-micro">No tiene que ser el precio exacto, solo ayúdanos a saber desde cuánto inicia.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Desde $1,200 MXN</li>
+          <li>Desde $450 MXN por sesión</li>
+          <li>Paquetes desde $3,000 MXN</li>
+        </ul>
+      </div>
+      <input type="text" name="precio_${id}" placeholder="Ej: Desde $1,200 MXN">
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">06</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Qué dolor o problema resuelve este producto o servicio?</div>
+      <div class="field-micro">Describe qué está viviendo la persona antes de comprar esto.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Tiene la piel grasa y no encuentra un producto que le funcione.</li>
+          <li>Está cansado de gastar en publicidad sin ver resultados.</li>
+          <li>Le preocupa que su techo siga filtrando agua en lluvias fuertes.</li>
+        </ul>
+      </div>
+      <textarea name="dolor_${id}" placeholder="Antes de comprar esto, la persona está viviendo…" required></textarea>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">07</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Qué deseo o resultado le da a la persona que lo compra?</div>
+      <div class="field-micro">¿Qué quiere lograr o sentir la persona al comprar esto?</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Sentirse segura con su piel sin tener que maquillarse tanto.</li>
+          <li>Tener un negocio que vende todos los días sin esfuerzo extra.</li>
+          <li>Dormir tranquilo sabiendo que su casa no se va a inundar.</li>
+        </ul>
+      </div>
+      <textarea name="deseo_${id}" placeholder="La persona quiere sentirse o lograr…" required></textarea>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">08</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Por qué deberían elegirte a ti y no a la competencia?</div>
+      <div class="field-micro">Tu diferenciador real. Evita respuestas genéricas como "buen servicio" o "buenos precios".</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Somos los únicos en la zona con equipo de última generación certificado.</li>
+          <li>Damos seguimiento personalizado por 30 días después de la compra.</li>
+          <li>Tenemos más de 10 años de experiencia y garantía por escrito.</li>
+        </ul>
+      </div>
+      <textarea name="diferenciador_${id}" placeholder="Deberían elegirnos porque…" required></textarea>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">09</span>
+        <span class="badge badge-short">Respuesta corta</span>
+        <span class="badge badge-opt">Opcional</span>
+      </div>
+      <div class="field-label">¿Hay urgencia o fecha límite?</div>
+      <div class="field-micro">Cualquier razón por la que la persona deba actuar pronto.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Cupo limitado a 10 personas</li>
+          <li>Promoción válida solo esta semana</li>
+          <li>Últimos lugares disponibles este mes</li>
+        </ul>
+      </div>
+      <input type="text" name="urgencia_${id}" placeholder="Ej: Solo esta semana">
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">10</span>
+        <span class="badge badge-short">Respuesta corta</span>
+        <span class="badge badge-req">Obligatorio</span>
+      </div>
+      <div class="field-label">¿Qué quieres que haga la persona después de ver el reel?</div>
+      <div class="field-micro">El llamado a la acción que debe quedar claro al final.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Escribir por WhatsApp para agendar una cita</li>
+          <li>Visitar el link en la bio para comprar</li>
+          <li>Llamar para reservar su lugar</li>
+        </ul>
+      </div>
+      <input type="text" name="cta_${id}" placeholder="Ej: Escribir por WhatsApp para agendar" required>
+    </div>
+
+    <div class="field-block">
+      <div class="field-meta">
+        <span class="field-num">11</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-opt">Opcional</span>
+      </div>
+      <div class="field-label">¿Hay algo que sí o sí quieres que se mencione?</div>
+      <div class="field-micro">Cualquier dato, condición o detalle que debemos incluir obligatoriamente.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>Sí o sí mencionar que la promoción aplica solo con cita previa.</li>
+          <li>Aclarar que el envío gratis solo es dentro de la ciudad.</li>
+        </ul>
+      </div>
+      <textarea name="si_mencionar_${id}" placeholder="Es obligatorio mencionar que…"></textarea>
+    </div>
+
+    <div class="field-block" style="margin-bottom:0;">
+      <div class="field-meta">
+        <span class="field-num">12</span>
+        <span class="badge badge-long">Respuesta larga</span>
+        <span class="badge badge-opt">Opcional</span>
+      </div>
+      <div class="field-label">¿Hay algo que NO debemos decir o cuidar?</div>
+      <div class="field-micro">Para cuidar temas médicos, legales, financieros o cualquier información delicada.</div>
+      <div class="examples">
+        <div class="examples-title">Ejemplos de referencia</div>
+        <ul>
+          <li>No prometer resultados garantizados.</li>
+          <li>No comparar directamente con la competencia por nombre.</li>
+        </ul>
+      </div>
+      <textarea name="no_mencionar_${id}" placeholder="Hay que evitar o cuidar que…"></textarea>
+    </div>
+  `;
+}
+
+function toggleYN(btn, id) {
+  const row = btn.parentElement;
+  row.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const value = btn.textContent.trim();
+  document.getElementById('tiene_promo_' + id).value = value;
+  const detail = document.getElementById('promo-detail-' + id);
+  if (value === 'Sí') { detail.classList.add('show'); }
+  else { detail.classList.remove('show'); }
+}
+
+function agregarTema() {
+  temaCount++;
+  const id = temaCount;
+  const container = document.getElementById('temas-container');
+
+  const card = document.createElement('div');
+  card.className = 'tema-card';
+  card.id = 'tema-card-' + id;
+  card.dataset.tipo = 'valor';
+  card.innerHTML = `
+    <div class="tema-card-head" onclick="toggleTema(${id})">
+      <div class="tema-card-head-left">
+        <div class="tema-num">${id}</div>
+        <div class="tema-title-display placeholder" id="tema-title-${id}">Tema ${id} — sin título aún</div>
+        <span class="tema-type-tag" id="tema-tag-${id}">Valor</span>
+      </div>
+      <div class="tema-actions">
+        ${id > 1 ? `<button type="button" class="btn-remove" onclick="event.stopPropagation(); eliminarTema(${id})">Eliminar</button>` : ''}
+        <button type="button" class="btn-toggle" id="toggle-${id}">▾</button>
+      </div>
+    </div>
+    <div class="tema-card-body" id="tema-body-${id}">
+
+      <div class="tipo-switch-wrap">
+        <div class="tipo-switch-label">Tipo de contenido</div>
+        <div class="tipo-switch">
+          <button type="button" class="tipo-btn valor active" id="btn-valor-${id}" onclick="cambiarTipo(${id}, 'valor')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            Contenido de Valor
+          </button>
+          <button type="button" class="tipo-btn venta" id="btn-venta-${id}" onclick="cambiarTipo(${id}, 'venta')">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3v-3m-3 3v-3m9-7H6a2 2 0 00-2 2v9a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2z"/></svg>
+            Reel de Venta
+          </button>
+        </div>
+      </div>
+
+      <div id="campos-dinamicos-${id}">
+        ${camposValor(id)}
+      </div>
+
+    </div>
+  `;
+  container.appendChild(card);
+  actualizarContador();
+
+  if (id > 1) {
+    setTimeout(() => { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+  }
+}
+
+function cambiarTipo(id, tipo) {
+  const card = document.getElementById('tema-card-' + id);
+  card.dataset.tipo = tipo;
+
+  document.getElementById('btn-valor-' + id).classList.toggle('active', tipo === 'valor');
+  document.getElementById('btn-venta-' + id).classList.toggle('active', tipo === 'venta');
+
+  const tag = document.getElementById('tema-tag-' + id);
+  tag.textContent = tipo === 'valor' ? 'Valor' : 'Venta';
+  tag.classList.toggle('venta', tipo === 'venta');
+
+  const container = document.getElementById('campos-dinamicos-' + id);
+  container.innerHTML = tipo === 'valor' ? camposValor(id) : camposVenta(id);
+
+  actualizarTituloTema(id);
+}
+
+function eliminarTema(id) {
+  if (!confirm('¿Seguro que quieres eliminar este tema?')) return;
+  const card = document.getElementById('tema-card-' + id);
+  if (card) card.remove();
+  actualizarContador();
+}
+
+function toggleTema(id) {
+  const body = document.getElementById('tema-body-' + id);
+  const toggle = document.getElementById('toggle-' + id);
+  body.classList.toggle('hidden');
+  toggle.classList.toggle('collapsed');
+}
+
+function actualizarTituloTema(id) {
+  const input = document.getElementById('tema-input-' + id);
+  const display = document.getElementById('tema-title-' + id);
+  if (input && input.value.trim()) {
+    display.textContent = input.value.trim();
+    display.classList.remove('placeholder');
+  } else {
+    display.textContent = 'Tema ' + id + ' — sin título aún';
+    display.classList.add('placeholder');
+  }
+}
+
+function actualizarContador() {
+  const cards = document.querySelectorAll('.tema-card');
+  const n = cards.length;
+  document.getElementById('counter').textContent = n;
+  document.getElementById('counter-label').textContent = n === 1 ? 'tema agregado' : 'temas agregados';
+}
+
+agregarTema();
+
+const form = document.getElementById('bravo-form');
+const btn = document.getElementById('btn-submit');
+const errorMsg = document.getElementById('error-msg');
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const required = form.querySelectorAll('input[required], textarea[required]');
+  let valid = true;
+  required.forEach(f => {
+    if (!f.value.trim()) { f.classList.add('error'); valid = false; }
+    else f.classList.remove('error');
+  });
+
+  if (!valid) {
+    errorMsg.classList.add('show');
+    errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  errorMsg.classList.remove('show');
+
+  savedData = { empresa: document.getElementById('empresa').value, nombre: document.getElementById('nombre').value, temas: [] };
+
+  const cards = document.querySelectorAll('.tema-card');
+  cards.forEach((card, i) => {
+    const id = card.id.replace('tema-card-', '');
+    const tipo = card.dataset.tipo;
+    const get = (name) => (form.querySelector(`[name="${name}_${id}"]`) || {}).value || '';
+
+    if (tipo === 'valor') {
+      savedData.temas.push({
+        num: i + 1, tipo: 'valor', tema: get('tema'),
+        explicacion: get('explicacion'), idea: get('idea'), mito: get('mito'),
+        dolor: get('dolor'), solucion: get('solucion'),
+        si_mencionar: get('si_mencionar'), no_mencionar: get('no_mencionar')
+      });
+    } else {
+      savedData.temas.push({
+        num: i + 1, tipo: 'venta', producto: get('producto'),
+        tiene_promo: get('tiene_promo'), detalle_promo: get('detalle_promo'),
+        precio: get('precio'), dolor: get('dolor'), deseo: get('deseo'),
+        diferenciador: get('diferenciador'), urgencia: get('urgencia'), cta: get('cta'),
+        si_mencionar: get('si_mencionar'), no_mencionar: get('no_mencionar')
+      });
+    }
+  });
+
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2" opacity="0.3"/><path d="M12 2a10 10 0 0 1 10 10" stroke-width="2.5" stroke-linecap="round"/></svg> Enviando…`;
+
+  try {
+    const data = new FormData(form);
+    const response = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+    if (response.ok) {
+      document.querySelector('.form-wrap').style.display = 'none';
+      document.querySelector('.submit-zone').style.display = 'none';
+      document.getElementById('success-state').classList.add('show');
+      document.getElementById('success-state').scrollIntoView({ behavior: 'smooth' });
+    } else { throw new Error(); }
+  } catch {
+    btn.disabled = false;
+    btn.innerHTML = `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14M12 5l7 7-7 7"/></svg> Finalizar y enviar todo`;
+    alert('Hubo un problema al enviar. Por favor intenta de nuevo.');
+  }
+});
+
+form.querySelectorAll('input, textarea').forEach(f => {
+  f.addEventListener('input', function() { this.classList.remove('error'); });
+});
+
+function descargarPDF() {
+  const fecha = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
+  const d = savedData;
+  let temasHTML = '';
+
+  d.temas.forEach((t, i) => {
+    if (t.tipo === 'valor') {
+      temasHTML += `
+        <div class="tema-section" style="page-break-before: ${i > 0 ? 'always' : 'auto'};">
+          <div class="tema-header">
+            <div class="tema-badge">Tema ${t.num} · Contenido de Valor</div>
+            <div class="tema-nombre">${t.tema || '—'}</div>
+          </div>
+          <div class="fields">
+            <div class="field"><div class="flabel"><span class="fnum">04</span> Explicación del tema</div><div class="fval">${t.explicacion || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">05</span> Idea más importante</div><div class="fval">${t.idea || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">06</span> Error, mito o creencia equivocada</div><div class="fval">${t.mito || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">07</span> Dolor, problema o preocupación</div><div class="fval">${t.dolor || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">08</span> Solución, beneficio, aprendizaje o resultado</div><div class="fval">${t.solucion || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">09</span> Lo que sí debe mencionarse <span style="font-weight:400;color:#bbb;">(Opcional)</span></div><div class="fval ${t.si_mencionar ? '' : 'empty-field'}">${t.si_mencionar || 'No especificado'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">10</span> Lo que NO debemos decir <span style="font-weight:400;color:#bbb;">(Opcional)</span></div><div class="fval ${t.no_mencionar ? '' : 'empty-field'}">${t.no_mencionar || 'No especificado'}</div></div>
+          </div>
+        </div>
+      `;
+    } else {
+      temasHTML += `
+        <div class="tema-section" style="page-break-before: ${i > 0 ? 'always' : 'auto'};">
+          <div class="tema-header">
+            <div class="tema-badge venta-badge">Tema ${t.num} · Reel de Venta</div>
+            <div class="tema-nombre">${t.producto || '—'}</div>
+          </div>
+          <div class="fields">
+            <div class="field"><div class="flabel"><span class="fnum">04</span> Promoción</div><div class="fval">${t.tiene_promo === 'Sí' ? ('Sí — ' + (t.detalle_promo || 'sin detalle')) : 'No'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">05</span> Precio desde <span style="font-weight:400;color:#bbb;">(Opcional)</span></div><div class="fval ${t.precio ? '' : 'empty-field'}">${t.precio || 'No especificado'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">06</span> Dolor o problema que resuelve</div><div class="fval">${t.dolor || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">07</span> Deseo o resultado que da</div><div class="fval">${t.deseo || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">08</span> Diferenciador frente a la competencia</div><div class="fval">${t.diferenciador || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">09</span> Urgencia o fecha límite <span style="font-weight:400;color:#bbb;">(Opcional)</span></div><div class="fval ${t.urgencia ? '' : 'empty-field'}">${t.urgencia || 'No especificado'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">10</span> Llamado a la acción (CTA)</div><div class="fval">${t.cta || '<span class=empty>Sin respuesta</span>'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">11</span> Lo que sí debe mencionarse <span style="font-weight:400;color:#bbb;">(Opcional)</span></div><div class="fval ${t.si_mencionar ? '' : 'empty-field'}">${t.si_mencionar || 'No especificado'}</div></div>
+            <div class="field"><div class="flabel"><span class="fnum">12</span> Lo que NO debemos decir <span style="font-weight:400;color:#bbb;">(Opcional)</span></div><div class="fval ${t.no_mencionar ? '' : 'empty-field'}">${t.no_mencionar || 'No especificado'}</div></div>
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  const ventana = window.open('', '_blank');
+  ventana.document.write(`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<title>De idea a reel — ${d.empresa} — ${fecha}</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#0A0A0A;font-size:13px;line-height:1.6}
+  .cover{background:#0A0A0A;min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:0;page-break-after:always}
+  .cover-top{padding:40px}
+  .cover-logo{font-size:24px;font-weight:900;color:#fff;letter-spacing:0.08em}
+  .cover-logo span{color:#E50914}
+  .cover-center{padding:60px 40px}
+  .cover-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:#E50914;margin-bottom:20px}
+  .cover-title{font-size:52px;font-weight:900;color:#fff;line-height:1.0;letter-spacing:-0.03em;margin-bottom:32px}
+  .cover-title em{color:#E50914;font-style:normal}
+  .cover-info{display:flex;gap:48px}
+  .cover-info-item label{font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#555;display:block;margin-bottom:4px}
+  .cover-info-item value{font-size:15px;font-weight:700;color:#fff}
+  .cover-bottom{padding:32px 40px;border-top:1px solid #1a1a1a;display:flex;justify-content:space-between;align-items:center}
+  .cover-bottom-date{font-size:12px;color:#555}
+  .cover-temas-count{font-size:12px;font-weight:700;color:#E50914;letter-spacing:0.1em;text-transform:uppercase}
+  .red-bar{height:3px;background:#E50914}
+  .tema-section{padding:40px}
+  .tema-header{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #E8E8E8}
+  .tema-badge{font-size:10px;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:#E50914;margin-bottom:8px}
+  .tema-badge.venta-badge{color:#E50914}
+  .tema-nombre{font-size:22px;font-weight:900;color:#0A0A0A;line-height:1.2;letter-spacing:-0.01em}
+  .field{margin-bottom:20px;page-break-inside:avoid}
+  .flabel{font-size:9px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#555;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .fnum{color:#E50914}
+  .fval{font-size:13px;color:#0A0A0A;line-height:1.7;background:#F9F9F9;border-left:3px solid #E8E8E8;padding:12px 14px;border-radius:0 3px 3px 0;white-space:pre-wrap;word-break:break-word}
+  .fval.empty-field{color:#BBB;font-style:italic}
+  .empty{color:#BBB;font-style:italic}
+  .page-footer{background:#0A0A0A;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;margin-top:40px}
+  .page-footer-copy{font-size:11px;color:#444}
+  .page-footer-copy span{color:#E50914}
+  .page-footer-badge{font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#333;background:#1a1a1a;padding:4px 10px;border-radius:2px}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.cover,.tema-section,.page-footer{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body>
+<div class="cover">
+  <div class="cover-top"><div class="cover-logo">BRAVO<span>.</span></div></div>
+  <div class="cover-center">
+    <div class="cover-eyebrow">Brief de Contenido · Producción de Reels</div>
+    <div class="cover-title">De idea<br>a <em>reel</em></div>
+    <div class="cover-info">
+      <div class="cover-info-item"><label>Empresa o marca</label><value>${d.empresa}</value></div>
+      <div class="cover-info-item"><label>Enviado por</label><value>${d.nombre}</value></div>
+    </div>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-bottom-date">${fecha}</div>
+    <div class="cover-temas-count">${d.temas.length} ${d.temas.length === 1 ? 'tema' : 'temas'} incluidos</div>
+  </div>
+</div>
+<div class="red-bar"></div>
+${temasHTML}
+<div class="page-footer">
+  <div class="page-footer-copy">&copy; 2025 <span>Bravo Agencia</span> · Documento de uso interno</div>
+  <div class="page-footer-badge">De Idea a Reel</div>
+</div>
+<script>window.onload=function(){window.print()}<\/script>
+</body></html>`);
+  ventana.document.close();
+}
+</script>
+</body>
+</html>
